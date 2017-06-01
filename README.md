@@ -24,3 +24,26 @@ Demo Script
 *  Approach 1: Emergency Service will use the models by having embedded engines	 
 * (Approach 2: Incoming Emergency Service will use generated code)
 * (Optional) We show some kind of Business Value driven monitoring (should we use KIBANA??? ) 
+
+
+
+* Requirements
+
+Install Spring Data Flow:
+
+brew install kafka
+
+(This will also install ZooKeeper)
+
+- Start zookeeper and kafka
+> zkServer start
+> kafka-server-start /usr/local/etc/kafka/server.properties
+
+- Download Spring Data Flow
+curl -O wget http://repo.spring.io/release/org/springframework/cloud/spring-cloud-dataflow-server-local/1.2.1.RELEASE/spring-cloud-dataflow-server-local-1.2.1.RELEASE.jar
+- Start the Server
+java -jar spring-cloud-dataflow-server-local-1.2.1.RELEASE.jar
+
+
+
+
