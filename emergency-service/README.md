@@ -30,3 +30,7 @@ I had to manually add the Activiti dependency and some others because is not ava
 </dependency>
 
 ```
+
+##Pending:
+
+Define the process
