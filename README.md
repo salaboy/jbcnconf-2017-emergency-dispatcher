@@ -27,21 +27,21 @@ Demo Script
 
 
 
-* Requirements
+# Requirements
 
-Install Spring Data Flow:
+### Install Spring Data Flow:
 
-brew install kafka
+* brew install kafka
 
 (This will also install ZooKeeper)
 
-- Start zookeeper and kafka
-> zkServer start
-> kafka-server-start /usr/local/etc/kafka/server.properties
+### Start zookeeper and kafka
+* zkServer start
+* kafka-server-start /usr/local/etc/kafka/server.properties
 
-- Download Spring Data Flow
+### Download Spring Data Flow
 curl -O wget http://repo.spring.io/release/org/springframework/cloud/spring-cloud-dataflow-server-local/1.2.1.RELEASE/spring-cloud-dataflow-server-local-1.2.1.RELEASE.jar
-- Start the Server
+### Start the Server
 java -jar spring-cloud-dataflow-server-local-1.2.1.RELEASE.jar
 
 
