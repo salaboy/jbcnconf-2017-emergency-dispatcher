@@ -18,7 +18,7 @@ public class EmergencySinkApplication {
 
 
     @StreamListener(Sink.INPUT)
-    public void loggerSink(String date) {
-        System.out.println("Received: " + date);
+    public void loggerSink(String emergency) {
+        System.out.println("Received: " + emergency);
     }
 }

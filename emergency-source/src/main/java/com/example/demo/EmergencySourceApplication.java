@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -16,13 +17,17 @@ import java.util.Date;
 @EnableBinding(Source.class)
 public class EmergencySourceApplication {
 
+
+
     public static void main(String[] args) {
         SpringApplication.run(EmergencySourceApplication.class, args);
     }
 
-    @Bean
-    @InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(fixedDelay = "10000", maxMessagesPerPoll = "1"))
-    public MessageSource<Long> timeMessageSource() {
-        return () -> MessageBuilder.withPayload(new Date().getTime()).build();
-    }
+
+
+//    @Bean
+//    @InboundChannelAdapter(value = Source.OUTPUT)
+//    public MessageSource<Long> timeMessageSource() {
+//        return () -> MessageBuilder.withPayload(new Date().getTime()).build();
+//    }
 }
