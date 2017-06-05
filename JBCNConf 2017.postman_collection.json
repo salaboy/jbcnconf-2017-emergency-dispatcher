@@ -1,0 +1,31 @@
+{
+	"variables": [],
+	"info": {
+		"name": "JBCNConf 2017",
+		"_postman_id": "4db2b4b1-3981-0bde-ed9a-eb58df0b5d24",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Emergency",
+			"request": {
+				"url": "http://192.168.255.243:32145/api/emergency/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n\t\"date\": \"1496648974639\",\n\t\"location\": {\n\t\t\"longitude\": 2.0,\n\t\t\"latitude\": 1.0\n\t}\n }"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
