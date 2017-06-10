@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.netflix.appinfo.ApplicationInfoManager;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
@@ -7,6 +8,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.messaging.Source;
@@ -14,10 +16,13 @@ import org.springframework.integration.annotation.Transformer;
 import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @SpringBootApplication
 @EnableBinding(Processor.class)
+@EnableEurekaClient
 public class EmergencyProcedureAApplication {
 
     public static void main(String[] args) {
@@ -29,8 +34,10 @@ public class EmergencyProcedureAApplication {
     private Source source;
 
 
+    private ApplicationInfoManager appInfoManager;
+
     @Autowired
-    public EmergencyProcedureAApplication(final RuntimeService runtimeService) {
+    public EmergencyProcedureAApplication(final RuntimeService runtimeService, ApplicationInfoManager appInfoManager) {
         this.runtimeService = runtimeService;
         this.runtimeService.addEventListener(new ActivitiEventListener() {
             @Override
@@ -43,6 +50,11 @@ public class EmergencyProcedureAApplication {
                 return false;
             }
         });
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("score", "40");
+        metadata.put("type", "procedure");
+        this.appInfoManager = appInfoManager;
+        this.appInfoManager.registerAppMetadata(metadata);
     }
 
 
