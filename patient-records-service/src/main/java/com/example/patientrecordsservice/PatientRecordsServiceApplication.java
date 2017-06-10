@@ -29,7 +29,7 @@ public class PatientRecordsServiceApplication implements CommandLineRunner {
     public void run(String... strings) throws Exception {
 
         Stream.of(new Patient("Mario", "Romano"),
-                new Patient("Mauricio", "Saladino")).forEach(patient -> {
+                new Patient("Mauricio", "Salatino")).forEach(patient -> {
             patientRestResource.save(patient);
         });
     }
