@@ -31,7 +31,6 @@ public class DispatcherController {
 
         List<String> services = discoveryClient.getServices();
         for(String s : services){
-            System.out.println("\t > Service: " + s);
             List<ServiceInstance> instances = discoveryClient.getInstances(s);
             for(ServiceInstance instance : instances){
                 System.out.println("Filtering by producedures");

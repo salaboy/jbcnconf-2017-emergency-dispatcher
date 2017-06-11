@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Bean;
 @EnableBinding(Source.class)
 public class EmergencySourceApplication {
 
-
-
     public static void main(String[] args) {
         SpringApplication.run(EmergencySourceApplication.class, args);
     }

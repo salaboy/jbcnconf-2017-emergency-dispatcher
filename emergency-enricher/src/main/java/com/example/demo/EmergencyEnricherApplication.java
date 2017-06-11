@@ -1,15 +1,16 @@
 package com.example.demo;
 
+import com.example.demo.model.Emergency;
+import com.example.demo.model.Patient;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
@@ -19,13 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.integration.annotation.Transformer;
-import org.springframework.messaging.support.GenericMessage;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootApplication
@@ -73,7 +73,9 @@ public class EmergencyEnricherApplication {
 
         logger.info("Audit From Enricher: " + emergency.toString());
 
-        return emergency;
+        Gson gson = new Gson();
+        String emergencyString = gson.toJson(new Emergency(UUID.randomUUID().toString(), new Patient("salaboy")));
+        return emergencyString;
     }
 
     private RestTemplate restTemplate() {

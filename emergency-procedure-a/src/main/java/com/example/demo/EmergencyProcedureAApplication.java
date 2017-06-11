@@ -1,5 +1,10 @@
 package com.example.demo;
 
+import com.example.demo.model.Emergency;
+import com.example.demo.model.Patient;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.netflix.appinfo.ApplicationInfoManager;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.event.ActivitiEvent;
@@ -12,17 +17,25 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @SpringBootApplication
-@EnableBinding(Processor.class)
 @EnableEurekaClient
+@EnableBinding(Source.class)
+@RestController
+@RequestMapping(value = "/api/")
 public class EmergencyProcedureAApplication {
 
     public static void main(String[] args) {
@@ -30,15 +43,29 @@ public class EmergencyProcedureAApplication {
     }
 
     private RuntimeService runtimeService;
-    @Autowired
-    private Source source;
 
+    private Source source;
 
     private ApplicationInfoManager appInfoManager;
 
     @Autowired
-    public EmergencyProcedureAApplication(final RuntimeService runtimeService, ApplicationInfoManager appInfoManager) {
+    public EmergencyProcedureAApplication(final RuntimeService runtimeService, ApplicationInfoManager appInfoManager, Source source) {
+        this.source = source;
         this.runtimeService = runtimeService;
+        this.appInfoManager = appInfoManager;
+
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("score", "40");
+        metadata.put("type", "procedure");
+
+        this.appInfoManager.registerAppMetadata(metadata);
+    }
+
+
+    @RequestMapping(value = "/procedure", method = RequestMethod.POST)
+    public String triggerProcedure(@RequestBody Emergency emergency) {
+        System.out.println("Emergency Procedure A: " + emergency);
         this.runtimeService.addEventListener(new ActivitiEventListener() {
             @Override
             public void onEvent(ActivitiEvent activitiEvent) {
@@ -50,24 +77,11 @@ public class EmergencyProcedureAApplication {
                 return false;
             }
         });
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("score", "40");
-        metadata.put("type", "procedure");
-        this.appInfoManager = appInfoManager;
-        this.appInfoManager.registerAppMetadata(metadata);
-    }
-
-
-
-
-    @Transformer(inputChannel = Processor.INPUT,
-            outputChannel = Processor.OUTPUT)
-    public Object transform(String emergency) {
-        System.out.println("Emergency Procedure A: " + emergency);
-
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("waiter", Collections.singletonMap("customerId", (Object) 243L));
         System.out.println("Process started: "+processInstance.getId());
-
-        return emergency;
+        Gson gson = new Gson();
+        String emergencyString = gson.toJson(emergency);
+        return emergencyString;
     }
+
 }
