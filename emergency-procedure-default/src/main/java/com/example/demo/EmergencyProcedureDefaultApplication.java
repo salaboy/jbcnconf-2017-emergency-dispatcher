@@ -27,10 +27,10 @@ import java.util.*;
 @EnableBinding(Source.class)
 @RestController
 @RequestMapping(value = "/api/")
-public class EmergencyProcedureBApplication {
+public class EmergencyProcedureDefaultApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EmergencyProcedureBApplication.class, args);
+        SpringApplication.run(EmergencyProcedureDefaultApplication.class, args);
     }
 
     private RuntimeService runtimeService;
@@ -40,14 +40,14 @@ public class EmergencyProcedureBApplication {
     private ApplicationInfoManager appInfoManager;
 
     @Autowired
-    public EmergencyProcedureBApplication(final RuntimeService runtimeService, ApplicationInfoManager appInfoManager, Source source) {
+    public EmergencyProcedureDefaultApplication(final RuntimeService runtimeService, ApplicationInfoManager appInfoManager, Source source) {
         this.source = source;
         this.runtimeService = runtimeService;
         this.appInfoManager = appInfoManager;
 
 
         Map<String, String> metadata = new HashMap<>();
-        metadata.put("score", "40");
+        metadata.put("score", "0");
         metadata.put("type", "procedure");
 
         this.appInfoManager.registerAppMetadata(metadata);
@@ -56,7 +56,7 @@ public class EmergencyProcedureBApplication {
 
     @RequestMapping(value = "/procedure", method = RequestMethod.POST)
     public String triggerProcedure(@RequestBody Emergency emergency) {
-        System.out.println("Emergency Procedure B: " + emergency);
+        System.out.println("Emergency Procedure Default: " + emergency);
         this.runtimeService.addEventListener(new ActivitiEventListener() {
             @Override
             public void onEvent(ActivitiEvent activitiEvent) {

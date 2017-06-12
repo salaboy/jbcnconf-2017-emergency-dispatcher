@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>emergency-procedure-b</artifactId>
+	<artifactId>emergency-procedure-default</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>emergency-procedure-b</name>
-	<description>Emergency Procedure B</description>
+	<name>emergency-procedure-default</name>
+	<description>Emergency Procedure Default</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
