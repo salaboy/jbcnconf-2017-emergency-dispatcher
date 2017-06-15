@@ -9,13 +9,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Emergency {
     private String id;
     private Patient patient;
+    private Location location;
+    private EmergencyType type;
 
     public Emergency() {
     }
 
-    public Emergency(String id, Patient patient) {
+
+    public Emergency(String id, Patient patient, Location location, EmergencyType type) {
         this.id = id;
         this.patient = patient;
+        this.location = location;
+        this.type = type;
     }
 
     public String getId() {
@@ -32,5 +37,21 @@ public class Emergency {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public EmergencyType getType() {
+        return type;
+    }
+
+    public void setType(EmergencyType type) {
+        this.type = type;
     }
 }

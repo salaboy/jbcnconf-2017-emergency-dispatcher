@@ -1,21 +1,21 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
- * Created by msalatino on 05/06/2017.
+ * Created by msalatino on 15/06/2017.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Location {
+
+public class EmergencyLocation {
     private Long latitude;
     private Long longitude;
+    private String description;
 
-    public Location() {
+    public EmergencyLocation() {
     }
 
-    public Location(Long latitude, Long longitude) {
+    public EmergencyLocation(Long latitude, Long longitude, String description) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.description = description;
     }
 
     public Long getLatitude() {
@@ -34,11 +34,20 @@ public class Location {
         this.longitude = longitude;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "Location{" +
+        return "EmergencyLocation{" +
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.model.Emergency;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ public class EmergencyController {
     @Autowired
     private Source source;
 
+    private Gson gson = new Gson();
 
     @RequestMapping(value = "/emergency", method = RequestMethod.POST)
-    public String newEmergency(@RequestBody Emergency emergency) {
-        logger.info("Emergency arrived: " + emergency);
-        source.output().send(MessageBuilder.withPayload(emergency.toString()).build());
-
-
-        return "OK";
+    public Emergency newEmergency(@RequestBody Emergency emergency) {
+        String emergencyString = gson.toJson(emergency);
+        logger.info("Emergency arrived: " + emergencyString);
+        source.output().send(MessageBuilder.withPayload(emergencyString).build());
+        return emergency;
     }
 }

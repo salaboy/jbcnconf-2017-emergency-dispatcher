@@ -16,8 +16,4 @@ public class EmergencySourceApplication {
         SpringApplication.run(EmergencySourceApplication.class, args);
     }
 
-    @Bean
-    public AlwaysSampler defaultSampler() {
-        return new AlwaysSampler();
-    }
 }

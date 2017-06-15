@@ -8,28 +8,53 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Patient {
-
-    private String name;
+    private String ssn;
+    private String firstName;
+    private String lastName;
+    private int age;
 
     public Patient() {
     }
 
-    public Patient(String name) {
-        this.name = name;
+    public String getSsn() {
+        return ssn;
     }
 
-    public String getName() {
-        return name;
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
     public String toString() {
         return "Patient{" +
-                "name='" + name + '\'' +
+                "ssn='" + ssn + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
                 '}';
     }
 }

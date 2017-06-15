@@ -4,6 +4,25 @@ rabbitmq:
     - "5672:5672"
     - "15672:15672"
 
+activiti:
+  ports:
+  - 9999:8080/tcp
+  environment:
+    ACTIVITI_CSRF_DISABLED: 'true'
+    ACTIVITI_CORS_ENABLED: 'true'
+  image: docker-internal.alfresco.com/alfresco/process-services
+  volumes:
+  - "~/.activiti/enterprise-license:/root/.activiti/enterprise-license/:ro"
+  links:
+  - mysql:mysql
+mysql:
+  environment:
+    MYSQL_DATABASE: activiti
+    MYSQL_PASSWORD: alfresco
+    MYSQL_ROOT_PASSWORD: my-secret-pass
+    MYSQL_USER: alfresco
+  image: mysql:5.6
+
 #redis:
 #    image: redis
 #    ports:

@@ -1,18 +1,16 @@
 package com.example.patientrecordsservice;
 
+import com.example.patientrecordsservice.model.Observation;
+import com.example.patientrecordsservice.model.Patient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.util.ArrayList;
+
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -28,8 +26,8 @@ public class PatientRecordsServiceApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        Stream.of(new Patient("Mario", "Romano"),
-                new Patient("Mauricio", "Salatino")).forEach(patient -> {
+        Stream.of(new Patient("ABC-001", "Mario", "Romano", 33),
+                new Patient("ABC-123", "Mauricio", "Salatino", 34)).forEach(patient -> {
             patientRestResource.save(patient);
         });
     }
@@ -37,86 +35,15 @@ public class PatientRecordsServiceApplication implements CommandLineRunner {
 
 @RepositoryRestResource(collectionResourceRel = "patient", path = "patient")
 interface PatientRestResource extends PagingAndSortingRepository<Patient, Long> {
-
+    //@TODO: Need query by SSN
 }
 
-@Entity
-class Patient {
-
-    @Id
-    @GeneratedValue
-    Long id;
-
-    String name;
-
-    String surname;
-
-    public Patient() {
-    }
-
-    public Patient(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-}
 
 @RepositoryRestResource(collectionResourceRel = "observation", path = "observation")
 interface ObservationRestResource extends PagingAndSortingRepository<Observation, Long> {
-
+    //@TODO: Need query by SSN
 }
 
-@Entity
-class Observation {
-
-    @Id
-    @GeneratedValue
-    Long id;
 
 
-    public Observation() {
-    }
-}
 
-@RepositoryRestResource(collectionResourceRel = "procedure", path = "procedure")
-interface ProcedureRestResource extends PagingAndSortingRepository<Procedure, Long> {
-
-}
-
-@Entity
-class Procedure {
-
-    @Id
-    @GeneratedValue
-    Long id;
-
-    public Procedure() {
-    }
-}
-
-@RepositoryRestResource(collectionResourceRel = "emergency", path = "emergency")
-interface EmergencyRestResource extends PagingAndSortingRepository<Emergency, Long> {
-
-}
-
-@Entity
-class Emergency {
-
-    @Id
-    @GeneratedValue
-    Long id;
-
-    public Emergency() {
-    }
-}

@@ -1,6 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.model.Emergency;
+import com.example.demo.model.EmergencyLocation;
+import com.example.demo.model.EmergencyType;
+import com.example.demo.model.incoming.IncomingEmergency;
 import com.example.demo.model.Patient;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,42 +43,61 @@ public class EmergencyEnricherApplication {
         SpringApplication.run(EmergencyEnricherApplication.class, args);
     }
 
+    private RestTemplate restTemplate = restTemplate();
 
+    private Gson gson = new Gson();
 
     @Transformer(inputChannel = Processor.INPUT,
             outputChannel = Processor.OUTPUT)
-    public Object transform(String emergency) {
+    public Object transform(String emergencyString) {
 
-        logger.info("IN the Pre-Processor - ");
-        RestTemplate restTemplate = restTemplate();
-        String url = "http://localhost:{port}/patient?page={page}&size={size}";
-        int port = 8085;
-        ResponseEntity<PagedResources<Patient>> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, null,
-                new ParameterizedTypeReference<PagedResources<Patient>>() {},
-                port, 0, 20);
+        logger.info("In Emergency Enricher");
+        IncomingEmergency incomingEmergency = gson.fromJson(emergencyString, IncomingEmergency.class);
+        //Get Patient By SSN
+        Patient patient = queryBySSN(incomingEmergency.getSsn());
+
+        //Decorate Emergency Code
+        EmergencyType type = queryEmergencyCode(incomingEmergency.getCode());
 
 
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            logger.info("Request OK.. looking for resources..." + responseEntity.getStatusCode());
+        //Decorate Location
+        EmergencyLocation location = decorateLocation(incomingEmergency.getLocation().getLatitude(),
+                incomingEmergency.getLocation().getLongitude());
 
-            PagedResources<Patient> patientResources = responseEntity.getBody();
-            logger.info("Patient Resources: " + patientResources);
-            List<Patient> patients = new ArrayList(patientResources.getContent());
-            logger.info("Patients size: " + patients.size());
-            for(Patient p : patients) {
-                logger.info("Patient p: " + p);
+        Emergency emergency = new Emergency(UUID.randomUUID().toString(),patient, type, location);
 
-            }
-        } else{
-            logger.error("Error: " + responseEntity.getStatusCode());
-        }
 
         logger.info("Audit From Enricher: " + emergency.toString());
 
-        Gson gson = new Gson();
-        String emergencyString = gson.toJson(new Emergency(UUID.randomUUID().toString(), new Patient("salaboy")));
-        return emergencyString;
+        return gson.toJson(emergency);
+    }
+
+    // Implement Location Decorator
+    private EmergencyLocation decorateLocation(Long latitude, Long longitude) {
+        //Default: if the emergency location cannot be decorated
+        return new EmergencyLocation(latitude, longitude, "NA");
+    }
+
+    // Implement Emergency Code MicroService
+    private EmergencyType queryEmergencyCode(String code) {
+        //Default:  if the emergency code cannot be resolved
+        return new EmergencyType(code, "NA");
+    }
+
+    private Patient queryBySSN(String ssn){
+        String url = "http://localhost:{port}/patient/"+ssn;
+        int port = 8085;
+        ResponseEntity<Patient> responseEntity = restTemplate.exchange(url,
+                HttpMethod.GET, null, Patient.class);
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            logger.info("Request OK.. looking for resources..." + responseEntity.getStatusCode());
+            Patient patient = responseEntity.getBody();
+            logger.info("Patient Resources: " + patient);
+            return patient;
+        }
+        return null;
+
+
     }
 
     private RestTemplate restTemplate() {
