@@ -90,13 +90,14 @@ In order to create a new emergency you need to look at the Emergency Source depl
 and send a POST request to http://localhost:<look for the assigned port>/api/emergency/
 With the following body: 
 
- {
-	"date": "1496648974639",
-	"ssn": "ABC-123",
-	"location": {
-		"longitude": 2.0,
-		"latitude": 1.0
-	}
- }
+{
+    "ssn": "ABC-123",
+    "location": {
+        "latitude": 1,
+        "longitude": 2
+    },
+    "date": 1496648974639,
+    "code": "011"
+}
 
 Alternatively, you can use the Chrome (extension) POSTman collection that you can found in root directory. Notice that you will need to modify the ports.
