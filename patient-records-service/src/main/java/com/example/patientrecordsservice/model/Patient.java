@@ -12,39 +12,39 @@ public class Patient {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    String ssn;
+    private String ssn;
 
-    String name;
+    private String name;
 
-    String surname;
+    private String lastname;
 
-    int age;
+    private Integer age;
 
     public Patient() {
     }
 
-    public Patient(String ssn, String name, String surname, int age) {
+    public Patient(String ssn, String name, String lastname, Integer age) {
         this.ssn = ssn;
         this.name = name;
-        this.surname = surname;
+        this.lastname = lastname;
         this.age = age;
     }
 
-    public Long getId() {
-        return id;
+    public String getSsn() {
+        return ssn;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 }

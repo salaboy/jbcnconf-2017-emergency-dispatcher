@@ -17,6 +17,7 @@ public class Observation {
     private String ssn;
 
     private String code;
+
     private String description;
 
     public Observation() {

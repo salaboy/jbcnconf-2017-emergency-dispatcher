@@ -85,7 +85,7 @@ public class EmergencyEnricherApplication {
     }
 
     private Patient queryBySSN(String ssn){
-        String url = "http://localhost:{port}/patient/"+ssn;
+        String url = "http://localhost:{port}/patient/search/findBySsn?ssn="+ssn;
         int port = 8085;
         ResponseEntity<Patient> responseEntity = restTemplate.exchange(url,
                 HttpMethod.GET, null, Patient.class);
