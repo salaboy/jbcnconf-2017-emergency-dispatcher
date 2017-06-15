@@ -10,7 +10,7 @@
 		{
 			"name": "New Emergency",
 			"request": {
-				"url": "http://192.168.255.243:32145/api/emergency/",
+				"url": "http://10.243.50.183:46794/api/emergency/",
 				"method": "POST",
 				"header": [
 					{
@@ -21,8 +21,111 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": " {\n\t\"date\": \"1496648974639\",\n\t\"location\": {\n\t\t\"longitude\": 2.0,\n\t\t\"latitude\": 1.0\n\t}\n }"
+					"raw": " {\n\t\"date\": \"1496648974639\",\n\t\"location\": {\n\t\t\"longitude\": 2.0,\n\t\t\"latitude\": 1.0\n\t},\n\t\"ssn\": \"ABC-123\",\n\t\"code\": \"011\"\n }"
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patients",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8085/patient?page=0&size=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "size",
+							"value": "20",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Procedures",
+			"request": {
+				"url": "http://localhost:8083/api/dispatcher",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Run Procedure A",
+			"request": {
+				"url": "http://localhost:8090/api/procedure",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"123\",\n\t\"patient\": {\n\t\t\"ssn\": \"ABC-123\",\n\t\t\"name\": \"salaboy\"\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient By SSN",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8085/patient?page=0&size=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "size",
+							"value": "20",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
 				"description": ""
 			},
 			"response": []

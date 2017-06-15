@@ -88,7 +88,7 @@ public class EmergencyEnricherApplication {
         String url = "http://localhost:{port}/patient/search/findBySsn?ssn="+ssn;
         int port = 8085;
         ResponseEntity<Patient> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, null, Patient.class);
+                HttpMethod.GET, null, Patient.class, port);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             logger.info("Request OK.. looking for resources..." + responseEntity.getStatusCode());
             Patient patient = responseEntity.getBody();
