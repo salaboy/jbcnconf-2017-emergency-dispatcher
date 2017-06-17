@@ -10,11 +10,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import java.util.stream.Stream;
 
 @SpringBootApplication
+@EnableEurekaClient
 public class PatientRecordsServiceApplication implements CommandLineRunner {
 
     @Autowired

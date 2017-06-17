@@ -9,8 +9,6 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.context.annotation.Configuration;
 
 
-@Configuration
-@EnableAutoConfiguration
 @EnableEurekaServer
 @SpringBootApplication
 public class ProcedureRegistryApplication {
