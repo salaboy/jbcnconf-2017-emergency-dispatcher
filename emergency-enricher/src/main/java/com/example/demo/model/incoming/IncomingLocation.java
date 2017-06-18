@@ -7,27 +7,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IncomingLocation {
-    private Long latitude;
-    private Long longitude;
+    private String description;
 
-    public IncomingLocation(Long latitude, Long longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+
+    public IncomingLocation(String description) {
+        this.description = description;
     }
 
-    public Long getLatitude() {
-        return latitude;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLatitude(Long latitude) {
-        this.latitude = latitude;
-    }
-
-    public Long getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Long longitude) {
-        this.longitude = longitude;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 public class EmergencySourceApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(EmergencySourceApplication.class, args);
     }
 

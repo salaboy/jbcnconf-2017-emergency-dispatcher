@@ -4,32 +4,32 @@ package com.example.demo.model;
  * Created by msalatino on 15/06/2017.
  */
 public class Location {
-    private Long latitude;
-    private Long longitude;
+    private Double latitude;
+    private Double longitude;
     private String description;
 
     public Location() {
     }
 
-    public Location(Long latitude, Long longitude, String description) {
+    public Location(Double latitude, Double longitude, String description) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.description = description;
     }
 
-    public Long getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Long latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Long getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

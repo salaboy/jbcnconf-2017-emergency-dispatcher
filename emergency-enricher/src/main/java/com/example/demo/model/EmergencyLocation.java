@@ -5,32 +5,32 @@ package com.example.demo.model;
  */
 
 public class EmergencyLocation {
-    private Long latitude;
-    private Long longitude;
+    private Double latitude;
+    private Double longitude;
     private String description;
 
     public EmergencyLocation() {
     }
 
-    public EmergencyLocation(Long latitude, Long longitude, String description) {
+    public EmergencyLocation(Double latitude, Double longitude, String description) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.description = description;
     }
 
-    public Long getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Long latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Long getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

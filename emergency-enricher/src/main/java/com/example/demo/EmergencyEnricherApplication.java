@@ -3,6 +3,8 @@ package com.example.demo;
 import com.example.demo.model.Emergency;
 import com.example.demo.model.EmergencyLocation;
 import com.example.demo.model.EmergencyType;
+import com.example.demo.model.incoming.GoogleAddress;
+import com.example.demo.model.incoming.GoogleResponse;
 import com.example.demo.model.incoming.IncomingEmergency;
 import com.example.demo.model.Patient;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -16,6 +18,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -34,7 +37,6 @@ import java.util.UUID;
 @SpringBootApplication
 @EnableBinding(Processor.class)
 public class EmergencyEnricherApplication {
-
 
 
     protected static Logger logger = LoggerFactory.getLogger(EmergencyEnricherApplication.class.getName());
@@ -61,10 +63,9 @@ public class EmergencyEnricherApplication {
 
 
         //Decorate Location
-        EmergencyLocation location = decorateLocation(incomingEmergency.getLocation().getLatitude(),
-                incomingEmergency.getLocation().getLongitude());
+        EmergencyLocation location = decorateLocation(incomingEmergency.getLocation().getDescription());
 
-        Emergency emergency = new Emergency(UUID.randomUUID().toString(),patient, type, location);
+        Emergency emergency = new Emergency(UUID.randomUUID().toString(), patient, type, location);
 
 
         logger.info("Audit From Enricher: " + emergency.toString());
@@ -73,19 +74,30 @@ public class EmergencyEnricherApplication {
     }
 
     // Implement Location Decorator
-    private EmergencyLocation decorateLocation(Long latitude, Long longitude) {
-        //Default: if the emergency location cannot be decorated
-        return new EmergencyLocation(latitude, longitude, "NA");
+    private EmergencyLocation decorateLocation(String description) {
+        String emergencyDescriptionDistilled = description.replaceAll(" ", "+");
+        String url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + emergencyDescriptionDistilled + "&sensor=true";
+        RestTemplate myRestTemplate = new RestTemplate();
+        GoogleResponse responseEntity = myRestTemplate.getForObject(url, GoogleResponse.class);
+
+
+        logger.info("address Resources: " + responseEntity.getResults().length);
+        return new EmergencyLocation(responseEntity.getResults()[0].getGeometry().getLocation().getLat(),
+                responseEntity.getResults()[0].getGeometry().getLocation().getLng(),
+                responseEntity.getResults()[0].getFormattedAddress());
+
+
     }
 
     // Implement Emergency Code MicroService
     private EmergencyType queryEmergencyCode(String code) {
         //Default:  if the emergency code cannot be resolved
+
         return new EmergencyType(code, "NA");
     }
 
-    private Patient queryBySSN(String ssn){
-        String url = "http://localhost:{port}/patient/search/findBySsn?ssn="+ssn;
+    private Patient queryBySSN(String ssn) {
+        String url = "http://localhost:{port}/patient/search/findBySsn?ssn=" + ssn;
         int port = 8085;
         ResponseEntity<Patient> responseEntity = restTemplate.exchange(url,
                 HttpMethod.GET, null, Patient.class, port);
