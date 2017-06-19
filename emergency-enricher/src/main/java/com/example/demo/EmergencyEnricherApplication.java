@@ -3,10 +3,9 @@ package com.example.demo;
 import com.example.demo.model.Emergency;
 import com.example.demo.model.EmergencyLocation;
 import com.example.demo.model.EmergencyType;
-import com.example.demo.model.incoming.GoogleAddress;
+import com.example.demo.model.Patient;
 import com.example.demo.model.incoming.GoogleResponse;
 import com.example.demo.model.incoming.IncomingEmergency;
-import com.example.demo.model.Patient;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -14,11 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resources;
+import org.springframework.context.annotation.Bean;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -28,14 +27,13 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 
 @SpringBootApplication
 @EnableBinding(Processor.class)
+@EnableEurekaClient
 public class EmergencyEnricherApplication {
 
 
@@ -48,6 +46,12 @@ public class EmergencyEnricherApplication {
     private RestTemplate restTemplate = restTemplate();
 
     private Gson gson = new Gson();
+
+    @Bean
+    public AlwaysSampler defaultSampler() {
+        return new AlwaysSampler();
+    }
+
 
     @Transformer(inputChannel = Processor.INPUT,
             outputChannel = Processor.OUTPUT)
