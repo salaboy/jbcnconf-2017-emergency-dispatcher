@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -8,11 +9,22 @@ import java.util.Date;
  * Created by msalatino on 05/06/2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class Emergency {
     private String id;
     private Location location;
     private Date date;
     private Patient patient;
+
+    public Emergency() {
+    }
+
+    public Emergency(String id, Location location, Date date, Patient patient) {
+        this.id = id;
+        this.location = location;
+        this.date = date;
+        this.patient = patient;
+    }
 
     public Location getLocation() {
         return location;

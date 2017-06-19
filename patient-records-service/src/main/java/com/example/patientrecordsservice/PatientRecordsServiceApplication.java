@@ -1,16 +1,17 @@
 package com.example.patientrecordsservice;
 
 import com.example.patientrecordsservice.model.Observation;
-
 import com.example.patientrecordsservice.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import java.util.stream.Stream;
 
@@ -33,6 +34,11 @@ public class PatientRecordsServiceApplication implements CommandLineRunner {
             patientRestResource.save(patient);
         });
     }
+
+    @Bean
+    public AlwaysSampler defaultSampler() {
+        return new AlwaysSampler();
+    }
 }
 
 @RepositoryRestResource(collectionResourceRel = "patient", path = "patient")
@@ -46,7 +52,6 @@ interface PatientRestResource extends PagingAndSortingRepository<Patient, Long> 
 @RepositoryRestResource(collectionResourceRel = "observation", path = "observation")
 interface ObservationRestResource extends PagingAndSortingRepository<Observation, Long> {
     //@TODO: Need query by SSN
-
 }
 
 
