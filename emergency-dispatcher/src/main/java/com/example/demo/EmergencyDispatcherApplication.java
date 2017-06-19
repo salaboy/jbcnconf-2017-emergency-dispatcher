@@ -73,11 +73,6 @@ public class EmergencyDispatcherApplication {
             URI defaultUri = null;
             for(ServiceInstance instance : instances){
                 if(instance.getMetadata().containsKey("type") && instance.getMetadata().get("type").equals("procedure") ){
-//                    System.out.println("Service Instance Id: " + instance.getServiceId());
-//                    System.out.println("Service Instance MetaData: " + instance.getMetadata());
-//                    System.out.println("Service Instance Host: " + instance.getHost());
-//                    System.out.println("Service Instance Port: " + instance.getPort());
-//                    System.out.println("Service Instance URI: " + instance.getUri());
                     if(instance.getServiceId().equalsIgnoreCase("procedure-default")){
                         defaultUri = instance.getUri();
                     }

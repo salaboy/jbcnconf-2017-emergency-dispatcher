@@ -10,7 +10,7 @@
 		{
 			"name": "New Emergency",
 			"request": {
-				"url": "http://10.243.50.183:46794/api/emergency/",
+				"url": "http://localhost:8080/emergency-source/api/emergency/",
 				"method": "POST",
 				"header": [
 					{
@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": " {\n\t\"date\": \"1496648974639\",\n\t\"location\": {\n\t\t\"longitude\": 2.0,\n\t\t\"latitude\": 1.0\n\t},\n\t\"ssn\": \"ABC-123\",\n\t\"code\": \"011\"\n }"
+					"raw": " {\n\t\"date\": \"1496648974639\",\n\t\"location\": {\n\t\t\"description\": \"fira+hotel+barcelona\"\n\t},\n\t\"ssn\": \"ABC-123\",\n\t\"code\": \"011\"\n }"
 				},
 				"description": ""
 			},
