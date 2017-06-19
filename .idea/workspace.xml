@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="50349c5f-ec6b-4c3d-b45c-6cd14151614a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-dispatcher/src/main/java/com/example/demo/EmergencyDispatcherApplication.java" afterPath="$PROJECT_DIR$/emergency-dispatcher/src/main/java/com/example/demo/EmergencyDispatcherApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/EmergencyProcedureDefaultApplication.java" afterPath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/EmergencyProcedureDefaultApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedure-registry-service/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/procedure-registry-service/src/main/resources/application.properties" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -553,6 +553,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="812" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
