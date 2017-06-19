@@ -62,14 +62,13 @@ class ProcedureRestController{
     private RuntimeService runtimeService;
 
     @PostMapping(value = "/procedure")
-    public ResponseEntity<Emergency> triggerProcedure(@RequestBody Emergency emergency) {
+    public ResponseEntity<?> triggerProcedure(@RequestBody Emergency emergency) {
 
         registerListner();
 
-        ProcessInstance processInstance = startProcess(emergency);
+        startProcess(emergency);
 
-        return new ResponseEntity<Emergency>(new Emergency(processInstance.getId(),new Location(12L, 12l),new Date(), new Patient()),
-                HttpStatus
+        return new ResponseEntity<>(HttpStatus
                 .OK);
     }
 

@@ -100,8 +100,8 @@ public class EmergencyDispatcherApplication {
                 RestTemplate restTemplate = restTemplate();
                 String url = selectedUri + "/api/procedure";
                 HttpEntity<Emergency> request = new HttpEntity<>(emergency);
-                ResponseEntity<Emergency> responseEntity = restTemplate.exchange(url,
-                        HttpMethod.POST, request, Emergency.class);
+                ResponseEntity<String> responseEntity = restTemplate.exchange(url,
+                        HttpMethod.POST, request, String.class);
 
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     System.out.println("Response from procedure: " + responseEntity);

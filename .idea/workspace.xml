@@ -2,39 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50349c5f-ec6b-4c3d-b45c-6cd14151614a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/.mvn/wrapper/maven-wrapper.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/.mvn/wrapper/maven-wrapper.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/mvnw" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/mvnw.cmd" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/src/main/java/com/example/demo/AuditReciever.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/src/main/java/com/example/demo/EmergencyAuditApplication.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/src/main/resources/application.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-audit/src/test/java/com/example/demo/DemoApplicationTests.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-enricher/.mvn/wrapper/maven-wrapper.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/emergency-enricher/.mvn/wrapper/maven-wrapper.properties" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-dispatcher/pom.xml" afterPath="$PROJECT_DIR$/emergency-dispatcher/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-dispatcher/src/main/java/com/example/demo/EmergencyDispatcherApplication.java" afterPath="$PROJECT_DIR$/emergency-dispatcher/src/main/java/com/example/demo/EmergencyDispatcherApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-enricher/pom.xml" afterPath="$PROJECT_DIR$/emergency-enricher/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-enricher/src/main/java/com/example/demo/EmergencyEnricherApplication.java" afterPath="$PROJECT_DIR$/emergency-enricher/src/main/java/com/example/demo/EmergencyEnricherApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-enricher/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/emergency-enricher/src/main/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-a/pom.xml" afterPath="$PROJECT_DIR$/emergency-procedure-a/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-a/src/main/java/com/example/demo/EmergencyProcedureAApplication.java" afterPath="$PROJECT_DIR$/emergency-procedure-a/src/main/java/com/example/demo/EmergencyProcedureAApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-b/pom.xml" afterPath="$PROJECT_DIR$/emergency-procedure-b/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-b/src/main/java/com/example/demo/EmergencyProcedureBApplication.java" afterPath="$PROJECT_DIR$/emergency-procedure-b/src/main/java/com/example/demo/EmergencyProcedureBApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/pom.xml" afterPath="$PROJECT_DIR$/emergency-procedure-default/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/EmergencyProcedureDefaultApplication.java" afterPath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/EmergencyProcedureDefaultApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/model/Emergency.java" afterPath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/model/Emergency.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/src/main/resources/bootstrap.properties" afterPath="$PROJECT_DIR$/emergency-procedure-default/src/main/resources/bootstrap.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-source/pom.xml" afterPath="$PROJECT_DIR$/emergency-source/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-source/src/main/java/com/example/demo/EmergencySourceApplication.java" afterPath="$PROJECT_DIR$/emergency-source/src/main/java/com/example/demo/EmergencySourceApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gateway/src/main/java/com/example/demo/GatewayApplication.java" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/example/demo/GatewayApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patient-records-service/pom.xml" afterPath="$PROJECT_DIR$/patient-records-service/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patient-records-service/src/main/java/com/example/patientrecordsservice/PatientRecordsServiceApplication.java" afterPath="$PROJECT_DIR$/patient-records-service/src/main/java/com/example/patientrecordsservice/PatientRecordsServiceApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patient-records-service/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/patient-records-service/src/main/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedure-registry-service/pom.xml" afterPath="$PROJECT_DIR$/procedure-registry-service/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedure-registry-service/src/main/java/com/example/demo/ProcedureRegistryApplication.java" afterPath="$PROJECT_DIR$/procedure-registry-service/src/main/java/com/example/demo/ProcedureRegistryApplication.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -583,7 +553,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="812" extended-state="1" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
