@@ -9,7 +9,9 @@ This repository contains a simple example using the following frameworks:
 - Eureka (and Feign)
 - Activiti Process Engine
 
-This example is intended to show how we can improve communication and collaboration with Domain Experts that can express their Domain Knowledge using different types of Models. These micro services show how we can mix and match the tools that we have available, to make sure that we use the best tool for the job at hand.
+This example is intended to show how we can improve communication and collaboration with Domain Experts that can express their Domain Knowledge using different types of Models. These microservices show how we can mix and match the tools that we have available, to make sure that we use the best tool for the job at hand.
+
+![Scenario]("images/scenario.png")
 
 ## Services
 
@@ -21,7 +23,7 @@ This example is intended to show how we can improve communication and collaborat
 * Procedure Registry: this service encapsulate an instance of Eureka that is used to register each of our procedures and their metadata
 * Gateway: this service will automatically discover other services and expose them via http in the port 8080
 
-
+![MicroServices]("images/microservices.png")
 
 ## Set up and Run
 
