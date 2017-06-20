@@ -15,6 +15,10 @@ public class Emergency {
     public Emergency() {
     }
 
+    public Emergency(String id) {
+        this.id = id;
+    }
+
     public Emergency(String id, Patient patient, EmergencyType type, EmergencyLocation location) {
         this.id = id;
         this.patient = patient;
@@ -34,16 +38,23 @@ public class Emergency {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public Emergency addPatient(Patient patient) {
         this.patient = patient;
+        return this;
     }
 
     public EmergencyType getType() {
         return type;
     }
 
-    public void setType(EmergencyType type) {
+    public Emergency addType(EmergencyType type) {
         this.type = type;
+        return this;
+    }
+
+    public Emergency addLocation(EmergencyLocation location) {
+        this.location = location;
+        return this;
     }
 
     @Override

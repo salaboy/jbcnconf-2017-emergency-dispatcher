@@ -54,6 +54,11 @@ public class EmergencyProcedureBApplication {
     }
 
 
+    @Bean
+    public AlwaysSampler defaultSampler() {
+        return new AlwaysSampler();
+    }
+
     @RequestMapping(value = "/procedure", method = RequestMethod.POST)
     public String triggerProcedure(@RequestBody Emergency emergency) {
         System.out.println("Emergency Procedure B: " + emergency);

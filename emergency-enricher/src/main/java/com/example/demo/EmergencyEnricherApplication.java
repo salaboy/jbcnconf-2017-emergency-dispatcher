@@ -3,41 +3,48 @@ package com.example.demo;
 import com.example.demo.model.Emergency;
 import com.example.demo.model.EmergencyLocation;
 import com.example.demo.model.EmergencyType;
-import com.example.demo.model.incoming.GoogleAddress;
+import com.example.demo.model.Patient;
 import com.example.demo.model.incoming.GoogleResponse;
 import com.example.demo.model.incoming.IncomingEmergency;
-import com.example.demo.model.Patient;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 
 @SpringBootApplication
 @EnableBinding(Processor.class)
+@EnableEurekaClient
 public class EmergencyEnricherApplication {
 
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        // Do any additional configuration here
+        return builder.build();
+    }
+
+    @Bean
+    public AlwaysSampler defaultSampler() {
+        return new AlwaysSampler();
+    }
 
     protected static Logger logger = LoggerFactory.getLogger(EmergencyEnricherApplication.class.getName());
 
@@ -45,40 +52,30 @@ public class EmergencyEnricherApplication {
         SpringApplication.run(EmergencyEnricherApplication.class, args);
     }
 
-    private RestTemplate restTemplate = restTemplate();
-
-    private Gson gson = new Gson();
 
     @Transformer(inputChannel = Processor.INPUT,
             outputChannel = Processor.OUTPUT)
     public Object transform(String emergencyString) {
 
         logger.info("In Emergency Enricher");
-        IncomingEmergency incomingEmergency = gson.fromJson(emergencyString, IncomingEmergency.class);
-        //Get Patient By SSN
-        Patient patient = queryBySSN(incomingEmergency.getSsn());
+        IncomingEmergency incomingEmergency = new Gson().fromJson(emergencyString, IncomingEmergency.class);
 
-        //Decorate Emergency Code
-        EmergencyType type = queryEmergencyCode(incomingEmergency.getCode());
-
-
-        //Decorate Location
-        EmergencyLocation location = decorateLocation(incomingEmergency.getLocation().getDescription());
-
-        Emergency emergency = new Emergency(UUID.randomUUID().toString(), patient, type, location);
+        Emergency emergency = new Emergency(UUID.randomUUID().toString())
+                .addLocation(retriveLocation(incomingEmergency.getLocation().getDescription()))
+                .addPatient(retrivePatient(incomingEmergency.getSsn()))
+                .addType(retiveEmergencyCode(incomingEmergency.getCode()));
 
 
         logger.info("Audit From Enricher: " + emergency.toString());
 
-        return gson.toJson(emergency);
+        return new Gson().toJson(emergency);
     }
 
     // Implement Location Decorator
-    private EmergencyLocation decorateLocation(String description) {
+    private EmergencyLocation retriveLocation(String description) {
         String emergencyDescriptionDistilled = description.replaceAll(" ", "+");
         String url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + emergencyDescriptionDistilled + "&sensor=true";
-        RestTemplate myRestTemplate = new RestTemplate();
-        GoogleResponse responseEntity = myRestTemplate.getForObject(url, GoogleResponse.class);
+        GoogleResponse responseEntity = restTemplate.getForObject(url, GoogleResponse.class);
 
 
         logger.info("address Resources: " + responseEntity.getResults().length);
@@ -90,17 +87,16 @@ public class EmergencyEnricherApplication {
     }
 
     // Implement Emergency Code MicroService
-    private EmergencyType queryEmergencyCode(String code) {
+    private EmergencyType retiveEmergencyCode(String code) {
         //Default:  if the emergency code cannot be resolved
 
         return new EmergencyType(code, "NA");
     }
 
-    private Patient queryBySSN(String ssn) {
-        String url = "http://localhost:{port}/patient/search/findBySsn?ssn=" + ssn;
-        int port = 8085;
+    private Patient retrivePatient(String ssn) {
+        String url = "http://localhost:8080/patient-record-service/patient/search/findBySsn?ssn=" + ssn;
         ResponseEntity<Patient> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, null, Patient.class, port);
+                HttpMethod.GET, null, Patient.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             logger.info("Request OK.. looking for resources..." + responseEntity.getStatusCode());
             Patient patient = responseEntity.getBody();
@@ -108,18 +104,5 @@ public class EmergencyEnricherApplication {
             return patient;
         }
         return null;
-
-
-    }
-
-    private RestTemplate restTemplate() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-        converter.setObjectMapper(mapper);
-        return new RestTemplate(Arrays.asList(converter));
     }
 }

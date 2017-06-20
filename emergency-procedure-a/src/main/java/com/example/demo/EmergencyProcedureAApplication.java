@@ -10,14 +10,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -45,6 +44,11 @@ public class EmergencyProcedureAApplication implements CommandLineRunner{
 
         this.appInfoManager.registerAppMetadata(metadata);
     }
+
+    @Bean
+    public AlwaysSampler defaultSampler() {
+        return new AlwaysSampler();
+    }
 }
 
 @RestController
@@ -54,14 +58,14 @@ class ProcedureRestController{
     @Autowired
     private RuntimeService runtimeService;
 
-    @RequestMapping(value = "/procedure", method = RequestMethod.POST)
+    @PostMapping(value = "/procedure")
     public ResponseEntity<String> triggerProcedure(@RequestBody Emergency emergency) {
 
         registerListner();
 
         startProcess(emergency);
 
-        return new ResponseEntity<String>("Procedure started", HttpStatus.OK);
+        return new ResponseEntity<>("Procedure started", HttpStatus.OK);
     }
 
     private void registerListner() {
