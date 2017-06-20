@@ -17,7 +17,7 @@ This example is intended to show how we can improve communication and collaborat
 * Emergency Source: Endpoint in charge of receiving Emergency Notifications, it will dispatch the notification using the message bus, so it can be processed asap.
 * Emergency Enricher: Processor in charge of decorating the initial emergency report with more information. This Processor uses other services such as the Patient Record Service to decorate the emergency information with extra data if the Patient is known by the organization. This service process the emergency and send via a message the decorated Emergency.
 * Emergency Dispatcher: This service is in charge of deciding how to deal with a specific Emergency. This service will have the domain expertise to know which of the available procedures should be used to deal with an Emergency based on the Emergency available information.
-* Emergency Procedure X: these services represent different types of procedures for different types of emergencies.
+* Emergency Procedure <X>: these services represent different types of procedures for different types of emergencies.
 * Procedure Registry: this service encapsulate an instance of Eureka that is used to register each of our procedures and their metadata
 * Gateway: this service will automatically discover other services and expose them via http in the port 8080
 
