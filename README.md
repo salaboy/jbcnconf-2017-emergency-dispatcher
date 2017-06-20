@@ -106,7 +106,8 @@ With the following body:
 
 Alternatively, you can use the Chrome (extension) POSTman collection that you can found in root directory.
 
-To Access Eureka Service registry you can go to http://localhost:9393/dashboard
-To access Zuul (Gateway) routes you can access: http://localhost:8080/routes
+To access Eureka Service registry you can go to http://localhost:9393/dashboard
+To access Zuul (Gateway) routes you can go to: http://localhost:8080/routes
+To access Zipkin (Tracer) UI you can go to:  http://localhost:
 
 
