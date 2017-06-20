@@ -77,7 +77,7 @@ class ProcedureRestController{
 
             @Override
             public void onEvent(ActivitiEvent activitiEvent) {
-//                source.output().send(MessageBuilder.withPayload(activitiEvent.toString()).build());
+
             }
 
             @Override
