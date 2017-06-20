@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="50349c5f-ec6b-4c3d-b45c-6cd14151614a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedure-registry-service/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/procedure-registry-service/src/main/resources/application.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-dispatcher/src/main/java/com/example/demo/EmergencyDispatcherApplication.java" afterPath="$PROJECT_DIR$/emergency-dispatcher/src/main/java/com/example/demo/EmergencyDispatcherApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-enricher/src/main/java/com/example/demo/EmergencyEnricherApplication.java" afterPath="$PROJECT_DIR$/emergency-enricher/src/main/java/com/example/demo/EmergencyEnricherApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-a/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/emergency-procedure-a/src/main/resources/application.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/EmergencyProcedureDefaultApplication.java" afterPath="$PROJECT_DIR$/emergency-procedure-default/src/main/java/com/example/demo/EmergencyProcedureDefaultApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emergency-procedure-default/src/main/resources/bootstrap.properties" afterPath="$PROJECT_DIR$/emergency-procedure-default/src/main/resources/bootstrap.properties" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -552,7 +555,7 @@
     <option name="totallyTimeSpent" value="10038000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="812" extended-state="1" />
+    <frame x="0" y="23" width="1440" height="812" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -786,11 +789,8 @@
         <state relative-caret-position="252">
           <caret line="52" column="5" lean-forward="false" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1704#1705#0" expanded="false" />
-            <element signature="e#1783#1784#0" expanded="false" />
-            <element signature="e#1932#1933#0" expanded="false" />
-            <element signature="e#1974#1975#0" expanded="false" />
+            <element signature="e#1852#1853#0" expanded="false" />
+            <element signature="e#1931#1932#0" expanded="false" />
           </folding>
         </state>
       </provider>

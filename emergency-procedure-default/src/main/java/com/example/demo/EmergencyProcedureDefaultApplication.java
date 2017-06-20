@@ -42,7 +42,7 @@ public class EmergencyProcedureDefaultApplication implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
         Map<String, String> metadata = new HashMap<>();
-        metadata.put("score", "40");
+        metadata.put("score", "0");
         metadata.put("type", "procedure");
 
         this.appInfoManager.registerAppMetadata(metadata);

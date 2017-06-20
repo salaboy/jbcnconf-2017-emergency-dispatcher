@@ -1,14 +1,13 @@
 package com.example.demo;
 
 import com.example.demo.model.Emergency;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -17,13 +16,12 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
-import org.springframework.hateoas.hal.Jackson2HalModule;
-import org.springframework.http.*;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -35,18 +33,24 @@ public class EmergencyDispatcherApplication {
     @Autowired
     private DiscoveryClient discoveryClient;
 
-    protected static Logger logger = LoggerFactory.getLogger(EmergencyDispatcherApplication.class.getName());
+    @Autowired
+    RestTemplate restTemplate;
 
-    public static void main(String[] args) {
-        SpringApplication.run(EmergencyDispatcherApplication.class, args);
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        // Do any additional configuration here
+        return builder.build();
     }
-
-    private Gson gson = new Gson();
-
 
     @Bean
     public AlwaysSampler defaultSampler() {
         return new AlwaysSampler();
+    }
+
+    protected static Logger logger = LoggerFactory.getLogger(EmergencyDispatcherApplication.class.getName());
+
+    public static void main(String[] args) {
+        SpringApplication.run(EmergencyDispatcherApplication.class, args);
     }
 
     /*
@@ -59,83 +63,65 @@ public class EmergencyDispatcherApplication {
      */
     @StreamListener(Sink.INPUT)
     public void dispatchToProcedure(String emergencyJson) {
-        logger.info("Received: " + emergencyJson + " now need to dispatch based on type");
-        System.out.println("Received: " + emergencyJson + " now need to dispatch based on type");
-        logger.info("Audit From Dispatcher: " + emergencyJson.toString());
+        logger.info("Audit From Dispatcher", emergencyJson.toString());
 
-        Emergency emergency = gson.fromJson(emergencyJson, Emergency.class);
+        Emergency emergency = new Gson().fromJson(emergencyJson, Emergency.class);
 
-        Integer score  = calculateScore(emergency);
+        Integer score = calculateScore(emergency);
 
-        System.out.println("Emergency Score: " + score);
+        URI selectedUri = getServiceFromEmergencyScore(score);
 
+        if(selectedUri != null){
+            ResponseEntity<String> responseEntity = callEmergencyProcedure(emergency, selectedUri);
+            logger.info("Response", responseEntity.getStatusCode());
+        }else{
+            logger.info("No procedure registered");
+        }
+
+    }
+
+    private ResponseEntity<String> callEmergencyProcedure(Emergency emergency, URI selectedUri) {
+        HttpEntity<Emergency> request = new HttpEntity<>(emergency);
+        return restTemplate.exchange(selectedUri + "/procedure", HttpMethod.POST, request, String.class);
+    }
+
+    private URI getServiceFromEmergencyScore(Integer score) {
         List<String> services = discoveryClient.getServices();
-        System.out.println("Get Procedures: ");
-        for(String s : services){
+        URI defaultUri = null;
+
+        for (String s : services) {
             List<ServiceInstance> instances = discoveryClient.getInstances(s);
-            URI selectedUri = null;
-            URI defaultUri = null;
-            for(ServiceInstance instance : instances){
-                if(instance.getMetadata().containsKey("type") && instance.getMetadata().get("type").equals("procedure") ){
-                    if(instance.getServiceId().equalsIgnoreCase("procedure-default")){
+
+            for (ServiceInstance instance : instances) {
+                if (instance.getMetadata().containsKey("type") && instance.getMetadata().get("type").equals("procedure")) {
+                    if (instance.getServiceId().equalsIgnoreCase("procedure-default")) {
                         defaultUri = instance.getUri();
                     }
-                    int procedureScoreValue = 0;
-                    if(instance.getMetadata().containsKey("score")) {
+
+                    if (instance.getMetadata().containsKey("score")) {
+                        int procedureScoreValue = 0;
                         String procedureScore = instance.getMetadata().get("score");
-                        if(procedureScore != null && !procedureScore.isEmpty()){
+                        if (procedureScore != null && !procedureScore.isEmpty()) {
                             procedureScoreValue = Integer.parseInt(procedureScore);
                         }
-                        if(score == procedureScoreValue) {
-                            selectedUri = instance.getUri();
+                        if (score == procedureScoreValue) {
+                            return instance.getUri();
                         }
                     }
                 }
             }
-            if(selectedUri == null && defaultUri != null){
-                selectedUri = defaultUri;
-            }
-            if(selectedUri != null) {
-                System.out.println("Selected URI = " + selectedUri);
-                RestTemplate restTemplate = restTemplate();
-                String url = selectedUri + "/api/procedure";
-                HttpEntity<Emergency> request = new HttpEntity<>(emergency);
-                ResponseEntity<String> responseEntity = restTemplate.exchange(url,
-                        HttpMethod.POST, request, String.class);
-
-                if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                    System.out.println("Response from procedure: " + responseEntity);
-                } else {
-                    System.out.println("Error calling procedure");
-                }
-            }else{
-                System.out.println("There is no procedure available at this time");
-            }
-
         }
+        return defaultUri;
     }
 
     /*
      * this calculate the score of the emergency based on the internal values
      */
     private Integer calculateScore(Emergency emergency) {
-        if(emergency.getType().getDescription().equalsIgnoreCase("NA")) {
-            return 0;
+        if (emergency.getType().getCode().equalsIgnoreCase("FIRE")) {
+            return 40;
         }
 
         return 0;
     }
-
-    private RestTemplate restTemplate() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-        converter.setObjectMapper(mapper);
-        return new RestTemplate(Arrays.asList(converter));
-    }
-
-
 }
