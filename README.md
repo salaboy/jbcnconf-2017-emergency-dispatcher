@@ -32,60 +32,102 @@ We are also using Docker compose in order to start some providers such as Rabbit
 
 ## Build all Maven modules (@TODO: create script):
 Run 'mvn clean install' in all the maven modules
+```
+cd ./emergency-dispatcher
+mvn clean install
+cd ../emergency-enricher
+mvn clean install
+cd ../emergency-procedure-default
+mvn clean install
+cd ../emergency-procedure-fire
+mvn clean install
+cd ../emergency-source
+mvn clean install
+cd ../gateway
+mvn clean install
+cd ../patient-records-service
+mvn clean install
+cd ../procedure-registry-service
+mvn clean install
+cd ..
+
+```
 
 
 ### Start Docker Compose Rabbit MQ And Zipkin Docker Compose
+```
 cd docker/
 docker-compose up -d
 
 cd ..
 cd zipkin/
 docker-compose up -d
-
+```
 
 ### Download Spring Data Flow
-curl -O http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-server-local/1.2.2.BUILD-SNAPSHOT/spring-cloud-dataflow-server-local-1.2.2.BUILD-20170601.204606-1.jar
-java -jar spring-cloud-dataflow-server-local-1.2.2.BUILD-20170601.204606-1.jar
+```
+curl -O https://repo.spring.io/libs-snapshot/org/springframework/cloud/spring-cloud-dataflow-server-local/1.2.2.RELEASE/spring-cloud-dataflow-server-local-1.2.2.RELEASE.jar
+```
+
 ### Start the Server
-java -jar spring-cloud-dataflow-server-local-1.2.1.RELEASE.jar
+```
+java -jar spring-cloud-dataflow-server-local-1.2.2.RELEASE.jar
+```
 
-### Download and start the Data flow shell (in a new terminal tab)
-curl -O http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-shell/1.2.2.BUILD-SNAPSHOT/spring-cloud-dataflow-shell-1.2.2.BUILD-20170601.204606-1.jar
-java -jar spring-cloud-dataflow-shell-1.2.2.BUILD-20170601.204606-1.jar
+### Download the Data Flow Shell (in a new terminal tab)
+```
+curl -O https://repo.spring.io/libs-snapshot/org/springframework/cloud/spring-cloud-dataflow-shell/1.2.2.RELEASE/spring-cloud-dataflow-shell-1.2.2.RELEASE.jar
+```
 
-### Flo -> UI
-If the Data Flow server is started you can access to the UI by pointing the Browser to: http://localhost:9393/dashboad
+### Start the Data Flow Shell 
+```
+java -jar spring-cloud-dataflow-shell-1.2.2.RELEASE.jar 
+```
 
 ### Registering Apps and configuring & deploying the stream definition
 
+#### Commands 
+Run these commands in the Data Flow Shell you just started.  Alternatively you can use the [Flo Dashboard](http://localhost:9393/dashboard)
+
+```
 app register --name emergency-source --type source --uri maven://com.example:emergency-source:jar:0.0.1-SNAPSHOT
 
 app register --name emergency-enricher --type processor --uri maven://com.example:emergency-enricher:jar:0.0.1-SNAPSHOT
 
 app register --name emergency-dispatcher --type sink --uri maven://com.example:emergency-dispatcher:jar:0.0.1-SNAPSHOT
 
-stream create --name emergency-stream --definition ‘emergency-source | emergency-enricher | emergency-dispatcher’
+stream create --name emergency-stream --definition "emergency-source | emergency-enricher | emergency-dispatcher"
 
 stream deploy --name emergency-stream
-
+```
 ### Starting other required services
-The stream will automatically bootstrap and register the Emergency Source, Emergency Enricher and Emergency Dispatcher projects, but you still need to boot up the following indepentendent modules:
-* Gateway:
+The stream will automatically bootstrap and register the Emergency Source, Emergency Enricher and Emergency Dispatcher projects, but you still need to boot up the following independent modules:
+
+#### Gateway:
+```
 cd gateway/
 mvn spring-boot:run
-* Procedure Registry Service:
+```
+#### Procedure Registry Service:
+```
 cd procedure-registry-service/
 mvn spring-boot:run
-* Patient Record Service:
+```
+#### Patient Record Service:
+```
 cd patient-records-service/
 mvn spring-boot:run
-* Emergency Procedure Default:
+```
+#### Emergency Procedure Default:
+```
 cd emergency-procedure-default/
 mvn spring-boot:run
-* Emergency Procedure X: (you can start as many as you want of these procedures)
+```
+#### Emergency Procedure X: (you can start as many as you want of these procedures)
+```
 cd emergency-procedure-(xx)/
 mvn spring-boot:run
-
+```
 
 
 ### Creating a New Emergency Request
@@ -95,7 +137,7 @@ These emergencies will be propagated to the Emergency Enricher which will decora
 
 In order to create a new emergency you need to send a POST request to http://localhost:8080/emergency-source/api/emergency/
 With the following body:
-
+```
 {
     "ssn": "ABC-123",
     "location": {
@@ -105,11 +147,15 @@ With the following body:
     "date": 1496648974639,
     "code": "011"
 }
+```
+Alternatively, you can use the Chrome (extension) POSTman collection found in the root directory.
 
-Alternatively, you can use the Chrome (extension) POSTman collection that you can found in root directory.
+### Access Points
 
-To access Eureka Service registry you can go to http://localhost:9393/dashboard
-To access Zuul (Gateway) routes you can go to: http://localhost:8080/routes
-To access Zipkin (Tracer) UI you can go to:  http://localhost:
+ * Eureka Service Registry  [http://localhost:9393/dashboard](http://localhost:9393/dashboard)
+
+ * Zuul (Gateway) http://localhost:8080/routes
+
+ * Zipkin (Tracer) http://docker_machine_ip:9411/zipkin/ [Example:http://192.168.99.100:9411/zipkin/](http://192.168.99.100:9411/zipkin/)
 
 
